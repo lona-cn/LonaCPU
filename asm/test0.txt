@@ -1,0 +1,9 @@
+limm64 r1 0xffffffffffffff00//将0xffffffffffffff00载入r1 limm64是伪指令
+limm8 r0 0x01
+store8 r1 r0//将r0的数据储存到r1指向的内存位置，该操作将会从stdout输出[0,0,0,0,0,0,0,1]
+limm16 r0 0x0101
+store16 r1 r0//将r0的数据储存到r1指向的内存位置，该操作将会从stdout输出[0,0,0,0,0,0,1,1]
+limm32 r0 0x01010101
+store32 r1 r0//将r0的数据储存到r1指向的内存位置，该操作将会从stdout输出[0,0,0,0,1,1,1,1]
+reset r7//将r7置0
+jmp r7//跳转到0x0000000000000000，程序将会进入无限循环

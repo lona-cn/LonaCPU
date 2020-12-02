@@ -1,0 +1,113 @@
+寄存器表:
+通用寄存器:R0-R7 每个寄存器位宽都为64位
+指令寄存器:IP
+栈寄存器:SP BP
+地址寄存器:AR0
+中断寄存器:IR
+内部寄存器:ITNR
+全局描述寄存器:GDTR （暂不支持）
+局部描述寄存器:LDTR （暂不支持）
+中断描述寄存器:IDTR （暂不支持）
+
+SIMD指令寄存器:暂无
+内存访问指令：
+load<8|16|32|64> <left_register> <right_register> 从right_register指向的内存地址载入数据到<left_register>，分为8位 16位 32位 64位4个版本
+store<8|16|32|64> <left_register> <right_register> 将right_register内的数据写入到left_register指向的内存地址，分为8位 16位 32位 64位4个版本
+
+寄存器数据访问:
+mov <left_register> <right_register>
+reset <register> 设置为0
+inc <register> 加1
+limm<8> <register> imm<8> 设置<register>=立即数imm<8>
+注意:limm<16|32|64>均为伪指令
+
+逻辑运算：
+and <left_register> <right_register> 将left_register与right_register做与运算结果存储到left_register中
+or <left_register> <right_register> 将left_register与right_register做或运算结果存储到left_register中
+xor <left_register> <right_register> 将left_register与right_register做异或运算结果存储到left_register中
+not <register> 将register做非运算结果存储到register中
+
+整数运算：
+add|sub<8|16|32|64> <left_register> <right_register> 将R4与R5做加法|减法运算，结果存储到left_register中
+
+条件跳转和位操作：
+jmp 无条件跳转到<register>指向的地址
+ja <left_register> <right_register> 如果左寄存器比右寄存器大，则跳转到AR0
+je <left_register> <right_register> 如果两个寄存器值相等，则跳转到AR0
+sal <register> <imm8> 算术左移
+sar <register> <imm8> 算术右移
+shl <register> <imm8> 逻辑左移
+shr <register> <imm8> 逻辑右移
+
+栈操作:
+push <register>
+pop <register>
+
+子程序跳转:
+call <register> 等价于push ip;jmp <register>
+ret 等价于pop ip
+
+中断:
+int <imm8> 调用<imm8>号中断
+iret 中断返回，中断程序执行完毕后调用该命令
+
+分页（暂不支持）:
+lgdt <register>
+sgdt <register>
+lldt <register>
+sldt <register>
+lidt <register>
+
+其他操作:
+nop 无操作
+
+机器码:
+机器码长度3字节
+命令长度1字节
+寄存器长度1字节
+格式: 0x命令:寄存器0:寄存器1 不需要使用到寄存器的地方填为0
+命令:
+load<8|16|32|64> 0x00 0x01 0x02 0x03
+store<8|16|32|64> 0x10 0x11 0x12 0x13
+
+mov 0x20
+reset 0x21
+inc 0x22
+limm<8> 0x23 指令长度为3字节
+
+and 0x30
+or 0x31
+xor 0x32
+not 0x33
+
+add 0x40 0x41 0x42 0x43
+sub 0x44 0x45 0x46 0x47
+
+jmp 0x50
+ja  0x51
+je  0x52
+sal 0x53
+sar 0x54
+shl 0x55
+shr 0x56
+
+push 0x60
+pop 0x61
+
+call 0x70
+ret 0x71
+
+int 0x80
+iret 0x81
+
+nop 0xff
+
+寄存器:
+R0-R7 0x00-0x07
+IP 0x20
+SP 0x30
+BP 0x31
+AR0 0x40
+IR 0x50
+
+
